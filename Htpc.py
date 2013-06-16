@@ -53,6 +53,8 @@ def load_modules():
     htpc.ROOT.couchpotato = Couchpotato()
     from modules.sickbeard import Sickbeard
     htpc.ROOT.sickbeard = Sickbeard()
+    from modules.transmission import Transmission
+    htpc.ROOT.transmission = Transmission()
     from modules.squeezebox import Squeezebox
     htpc.ROOT.squeezebox = Squeezebox()
     from modules.search import Search
@@ -70,7 +72,7 @@ def main():
     logfh = logging.FileHandler('htpc_manager.log')
 
     logformatter = logging.Formatter('%(asctime)s :: %(name)s :: %(levelname)s :: %(message)s')
-    logfh.setFormatter(logformatter)    
+    logfh.setFormatter(logformatter)
     logch.setFormatter(logformatter)
 
     args = parse_arguments()
@@ -112,10 +114,10 @@ def main():
         logger.setLevel(logging.ERROR)
         logch.setLevel(logging.ERROR)
         logfh.setLevel(logging.ERROR)
-    
+
     logger.addHandler(logfh)
     logger.addHandler(logch)
-    
+
     logger.critical("------------------------")
     logger.critical("Welcome to HTPC-Manager!")
     logger.critical("------------------------")
@@ -126,7 +128,7 @@ def main():
     sys.path.insert(0, os.path.join(htpc.RUNDIR, 'libs'))
 
     from sqlobject import connectionForURI, sqlhub
-    from mako.lookup import TemplateLookup    
+    from mako.lookup import TemplateLookup
 
     # Set datadir, create if it doesn't exist and exit if it isn't writable.
     htpc.DATADIR = os.path.join(htpc.RUNDIR, 'userdata/')
@@ -182,7 +184,7 @@ def main():
     if args.daemon and sys.platform != 'win32':
         logger.info("Setting up daemon-mode")
         htpc.DAEMON = True
-    
+
     if args.daemon and sys.platform == 'win32':
         logger.error("You are using Windows - I cannot setup daemon mode. Please use the pythonw executable instead.")
         logger.error("More information at http://docs.python.org/2/using/windows.html.")
